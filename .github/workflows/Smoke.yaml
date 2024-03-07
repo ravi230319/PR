@@ -1,1 +1,37 @@
+name: Your Workflow Name
+
+on:
+  pull_request:
+    branches:
+      - main  # Adjust as needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11  # Adjust to your JDK version
+
+    - name: Retrieve Secrets
+      env:
+        SECRET_VARIABLE1: ${{ secrets.ABC }}
+        # Add more secrets as needed
+      run: |
+        echo "::set-env name=SECRET_VARIABLE1::$SECRET_VARIABLE1"
+        # Set environment variables for each secret
+
+    - name: Replace Variables in Properties File
+      run: |
+        sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1|g" src/test/file.properties
+        # Add more sed commands for each variable you want to replace
+
+    - name: Use Properties File
+      run: |
+        # Use your properties file in your build or deployment process
 
