@@ -2,8 +2,6 @@ name: Your Workflow Name
 
 on:
   pull_request:
-    branches:
-      - main  # Adjust as needed
 
 jobs:
   build:
