@@ -21,12 +21,12 @@ jobs:
         SECRET_VARIABLE1: ${{ secrets.ABC }}
         # Add more secrets as needed
       run: |
-        echo "::set-env name=SECRET_VARIABLE1::$SECRET_VARIABLE1"
+        echo "$SECRET_VARIABLE1"
         # Set environment variables for each secret
 
     - name: Replace Variables in Properties File
       run: |
-        sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1|g" src/test/file.properties
+        sed -i "s|{{SECRET_VARIABLE1}}|${{ secrets.ABC }}|g" src/test/file.properties
         # Add more sed commands for each variable you want to replace
 
     - name: Use Properties File
