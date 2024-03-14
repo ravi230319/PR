@@ -20,9 +20,6 @@ jobs:
       env:
         SECRET_VARIABLE1: ${{ secrets.ABC }}
         # Add more secrets as needed
-      run: |
-        echo "$SECRET_VARIABLE1"
-        # Set environment variables for each secret
 
     - name: Replace Variables in Properties File
       run: |
