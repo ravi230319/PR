@@ -3,7 +3,7 @@ name: Your Workflow Name
 on:
   pull_request:
 
- env:
+env:
     SECRET_VARIABLE1: ${{ secrets.ABC }}
 
 jobs:
