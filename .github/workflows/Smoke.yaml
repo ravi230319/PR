@@ -5,6 +5,7 @@ on:
 
 env:
     SECRET_VARIABLE1: ${{ secrets.ABC }}
+    VAR: ${{ vars.VAR }}
 
 jobs:
   build:
@@ -22,6 +23,8 @@ jobs:
     - name: Replace Variables in Properties File
       run: |
         sed -i "s|{{SECRET_VARIABLE1}}|${{ secrets.ABC }}|g" src/test/file.properties
+        sed -i "s|{{SECRET_VARIABLE1}}|${{ vars.VAR }}|g" src/test/file.properties
+        
         # Add more sed commands for each variable you want to replace
 
     - name: Use Properties File
