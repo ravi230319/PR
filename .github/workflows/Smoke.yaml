@@ -1,7 +1,7 @@
 name: Regression manual trigger
 
 on:
-  workflow_dispatch:
+  pull_request:
 
 env:
     SECRET_VARIABLE1: ${{ secrets.ABC }}
