@@ -1,0 +1,34 @@
+name: Regression manual trigger
+
+on:
+  workflow_dispatch:
+
+env:
+    SECRET_VARIABLE1: ${{ secrets.ABC }}
+    VAR: ${{ vars.VAR }}
+
+jobs:
+
+  build:
+    runs-on: kubernetes
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11  # Adjust to your JDK version
+
+    - name: Replace Variables in Properties File
+      run: |
+        sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1g" src/test/file.properties
+        sed -i "s|{{SECRET_VARIABLE1}}|$VAR|g" src/test/file.properties
+        
+        # Add more sed commands for each variable you want to replace
+
+    - name: Use Properties File
+      run: |
+        # Use your properties file in your build or deployment process
+
