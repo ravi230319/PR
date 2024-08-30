@@ -2,6 +2,16 @@ name: Regression manual trigger
 
 on:
   workflow_dispatch:
+    inputs:
+      selected_version:
+        description: "Select the app version"
+        required: true
+        default: "VERSION1"
+        type: choice
+        options:
+          - VERSION1
+          - VERSION2
+          - VERSION3
 
 env:
     SECRET_VARIABLE1: ${{ secrets.ABC }}
