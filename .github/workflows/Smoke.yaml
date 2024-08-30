@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       selected_version:
-        description: "Select the app version"
+        description: "Select the regression suite you want to run"
         required: true
-        default: "VERSION1"
+        default: "@regression-sell"
         type: choice
         options:
-          - VERSION1
-          - VERSION2
-          - VERSION3
+          - @regression-sell
+          - @regression-order
+          - @regression-rep
 
 env:
     SECRET_VARIABLE1: ${{ secrets.ABC }}
