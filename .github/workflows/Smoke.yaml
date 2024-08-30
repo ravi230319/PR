@@ -6,12 +6,12 @@ on:
       selected_version:
         description: "Select the regression suite you want to run"
         required: true
-        default: "@regression-sell"
+        default: "regression-sell"
         type: choice
         options:
-          - @regression-sell
-          - @regression-order
-          - @regression-rep
+          - regression-sell
+          - regression-order
+          - regression-rep
 
 env:
     SECRET_VARIABLE1: ${{ secrets.ABC }}
