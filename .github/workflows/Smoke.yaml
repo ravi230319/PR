@@ -82,6 +82,9 @@ jobs:
           ls -l src/test
           cat src/test/file1.properties
           cat src/test/file2.properties
+    - name: Verify file1 files
+      run: |
+          cat src/test/file.properties
 
     - name: Cache local Maven repository
       uses: actions/cache@v2
