@@ -88,4 +88,5 @@ jobs:
       run: |
           cp folder1/file1.properties src/test/
           cp folder1/file2.properties src/test/
+          ls -l src/test
 
