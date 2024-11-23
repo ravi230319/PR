@@ -65,11 +65,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Move properties files into an existing folder
-      run: |
-          ls -l $GITHUB_WORKSPACE
-          cp $GITHUB_WORKSPACE/azure.properties src/test/azure.properties
-          cp $GITHUB_WORKSPACE/azure-Desp.properties src/test/azure-Desp.properties
+    # - name: Move properties files into an existing folder
+    #   run: |
+    #       ls -l $GITHUB_WORKSPACE
+    #       cp $GITHUB_WORKSPACE/azure.properties src/test/azure.properties
+    #       cp $GITHUB_WORKSPACE/azure-Desp.properties src/test/azure-Desp.properties
     - name: Restore properties files from cache
       uses: actions/cache@v3
       with:
