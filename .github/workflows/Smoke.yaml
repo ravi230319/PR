@@ -15,19 +15,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Write Secrets to Properties File
-      run: |
-        echo "" >> src/test/azure.properties    
-        echo "AZURE_CLIENT_ID=xyz" >> src/test/azure.properties
-        echo "AZURE_CLIENT_SECRET=${{ secrets.ABC }}" >> src/test/azure.properties
-        echo "" >> src/test/azure-Desp.properties 
-        echo "AZURE_CLIENT_ID=${{ secrets.ABC }}" >> src/test/azure-Desp.properties
-        echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure-Desp.properties
-    - name: Move files to shared workspace
-      run: |
-        cp src/test/azure.properties $GITHUB_WORKSPACE/azure.properties
-        cp src/test/azure-Desp.properties $GITHUB_WORKSPACE/azure-Desp.properties  
-        ls -l $GITHUB_WORKSPACE
+    # - name: Write Secrets to Properties File
+    #   run: |
+    #     echo "" >> src/test/azure.properties    
+    #     echo "AZURE_CLIENT_ID=xyz" >> src/test/azure.properties
+    #     echo "AZURE_CLIENT_SECRET=${{ secrets.ABC }}" >> src/test/azure.properties
+    #     echo "" >> src/test/azure-Desp.properties 
+    #     echo "AZURE_CLIENT_ID=${{ secrets.ABC }}" >> src/test/azure-Desp.properties
+    #     echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure-Desp.properties
+    # - name: Move files to shared workspace
+    #   run: |
+    #     cp src/test/azure.properties $GITHUB_WORKSPACE/azure.properties
+    #     cp src/test/azure-Desp.properties $GITHUB_WORKSPACE/azure-Desp.properties  
+    #     ls -l $GITHUB_WORKSPACE
 
     - name: Create properties files
       run: |
