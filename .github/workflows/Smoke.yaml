@@ -32,7 +32,6 @@ jobs:
     - name: Create properties files
       run: |
           echo "MY_SECRET_KEY_1=${{ secrets.ABC }}" > src/test/file1.properties
-          echo "MY_SECRET_KEY_1=xyzdjshdjh" > src/test/file1.properties
           echo "MY_SECRET_KEY_2=abc" > src/test/file2.properties
 
     - name: Save properties files to cache
