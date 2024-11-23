@@ -20,25 +20,90 @@ env:
 jobs:
 
   build:
-    runs-on: kubernetes
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    # - name: Write Secrets to Properties File
+    #   run: |
+    #     echo "" >> src/test/azure.properties    
+    #     echo "AZURE_CLIENT_ID=xyz" >> src/test/azure.properties
+    #     echo "AZURE_CLIENT_SECRET=${{ secrets.ABC }}" >> src/test/azure.properties
+    #     echo "" >> src/test/azure-Desp.properties 
+    #     echo "AZURE_CLIENT_ID=${{ secrets.ABC }}" >> src/test/azure-Desp.properties
+    #     echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure-Desp.properties
+    # - name: Move files to shared workspace
+    #   run: |
+    #     cp src/test/azure.properties $GITHUB_WORKSPACE/azure.properties
+    #     cp src/test/azure-Desp.properties $GITHUB_WORKSPACE/azure-Desp.properties  
+    #     ls -l $GITHUB_WORKSPACE
+
+    - name: Create properties files
+      run: |
+          echo "MY_SECRET_KEY_1=${{ secrets.ABC }}" > src/test/file1.properties
+          echo "MY_SECRET_KEY_2=abc" > src/test/file2.properties
+
+    - name: Save properties files to cache
+      uses: actions/cache@v2
+      with:
+          path: src/test
+          key: ${{ runner.os }}-properties-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-propertiesss-
 
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
         java-version: 11  # Adjust to your JDK version
 
-    - name: Replace Variables in Properties File
-      run: |
-        sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1g" src/test/file.properties
-        sed -i "s|{{SECRET_VARIABLE1}}|$VAR|g" src/test/file.properties
+    # - name: Replace Variables in Properties File
+    #   run: |
+    #     sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1g" src/test/file.properties
+    #     sed -i "s|{{SECRET_VARIABLE1}}|$VAR|g" src/test/file.properties
         
-        # Add more sed commands for each variable you want to replace
+    #     # Add more sed commands for each variable you want to replace
 
     - name: Use Properties File
       run: |
         # Use your properties file in your build or deployment process
+  job2:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    # - name: Move properties files into an existing folder
+    #   run: |
+    #       ls -l $GITHUB_WORKSPACE
+    #       cp $GITHUB_WORKSPACE/azure.properties src/test/azure.properties
+    #       cp $GITHUB_WORKSPACE/azure-Desp.properties src/test/azure-Desp.properties
+    - name: Restore properties files from cache
+      uses: actions/cache@v2
+      with:
+          path: src/test
+          key: ${{ runner.os }}-properties-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-propertiesss-
+
+    - name: Verify cached files
+      run: |
+          ls -l src/test
+          cat src/test/file1.properties
+          cat src/test/file2.properties
+    - name: Verify file1 files
+      run: |
+          cat src/test/file.properties
+
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+    - name: Verify cached files
+      run: |
+          ls -l ~/.m2
 
