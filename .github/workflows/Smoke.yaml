@@ -86,6 +86,6 @@ jobs:
 
     - name: Move files to the desired directory
       run: |
-          cp folder1/file1.properties existing-folder/
-          cp folder1/file2.properties existing-folder/
+          cp folder1/file1.properties src/test/
+          cp folder1/file2.properties src/test/
 
