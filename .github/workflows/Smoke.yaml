@@ -73,7 +73,7 @@ jobs:
     - name: Restore properties files from cache
       uses: actions/cache@v2
       with:
-          path: folder1
+          path: src/test
           key: ${{ runner.os }}-properties-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-properties-
