@@ -10,7 +10,7 @@ env:
 jobs:
 
   build:
-    runs-on: kubernetes
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
@@ -45,7 +45,8 @@ jobs:
       run: |
         # Use your properties file in your build or deployment process
   job2:
-    runs-on: kubernetes
+    runs-on: ubuntu-latest
+    needs: build
 
     steps:
     - name: Checkout code
