@@ -15,20 +15,44 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Write Secrets to Properties File
+      run: |
+        echo "" >> src/test/azure.properties    
+        echo "AZURE_CLIENT_ID=xyz" >> src/test/azure.properties
+        echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure.properties
+        echo "" >> src/test/azure-Desp.properties 
+        echo "AZURE_CLIENT_ID=xyz" >> src/test/azure-Desp.properties
+        echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure-Desp.properties
+    - name: Move files to shared workspace
+      run: |
+        cp src/test/azure.properties $GITHUB_WORKSPACE/azure.properties
+        cp src/test/azure-Desp.properties $GITHUB_WORKSPACE/azure-Desp.properties  
+        ls -l $GITHUB_WORKSPACE
 
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
         java-version: 11  # Adjust to your JDK version
 
-    - name: Replace Variables in Properties File
-      run: |
-        sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1g" src/test/file.properties
-        sed -i "s|{{SECRET_VARIABLE1}}|$VAR|g" src/test/file.properties
+    # - name: Replace Variables in Properties File
+    #   run: |
+    #     sed -i "s|{{SECRET_VARIABLE1}}|$SECRET_VARIABLE1g" src/test/file.properties
+    #     sed -i "s|{{SECRET_VARIABLE1}}|$VAR|g" src/test/file.properties
         
-        # Add more sed commands for each variable you want to replace
+    #     # Add more sed commands for each variable you want to replace
 
     - name: Use Properties File
       run: |
         # Use your properties file in your build or deployment process
+  job2:
+    runs-on: kubernetes
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Move properties files into an existing folder
+      run: |
+          ls -l $GITHUB_WORKSPACE
+          cp $GITHUB_WORKSPACE/azure.properties src/test/azure.properties
+          cp $GITHUB_WORKSPACE/azure-Desp.properties src/test/azure-Desp.properties
 
