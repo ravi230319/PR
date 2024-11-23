@@ -29,6 +29,20 @@ jobs:
         cp src/test/azure-Desp.properties $GITHUB_WORKSPACE/azure-Desp.properties  
         ls -l $GITHUB_WORKSPACE
 
+    - name: Create properties files
+      run: |
+          mkdir -p folder1
+          echo "MY_SECRET_KEY_1=xyz" > folder1/file1.properties
+          echo "MY_SECRET_KEY_2=abc" > folder1/file2.properties
+
+    - name: Save properties files to cache
+      uses: actions/cache@v3
+      with:
+          path: folder1
+          key: ${{ runner.os }}-properties-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-properties-
+
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
@@ -56,4 +70,22 @@ jobs:
           ls -l $GITHUB_WORKSPACE
           cp $GITHUB_WORKSPACE/azure.properties src/test/azure.properties
           cp $GITHUB_WORKSPACE/azure-Desp.properties src/test/azure-Desp.properties
+    - name: Restore properties files from cache
+      uses: actions/cache@v3
+      with:
+          path: folder1
+          key: ${{ runner.os }}-properties-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-properties-
+
+    - name: Verify cached files
+      run: |
+          ls -l folder1
+          cat folder1/file1.properties
+          cat folder1/file2.properties
+
+    - name: Move files to the desired directory
+      run: |
+          cp folder1/file1.properties existing-folder/
+          cp folder1/file2.properties existing-folder/
 
