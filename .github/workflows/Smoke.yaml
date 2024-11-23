@@ -19,9 +19,9 @@ jobs:
       run: |
         echo "" >> src/test/azure.properties    
         echo "AZURE_CLIENT_ID=xyz" >> src/test/azure.properties
-        echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure.properties
+        echo "AZURE_CLIENT_SECRET=${{ secrets.ABC }}" >> src/test/azure.properties
         echo "" >> src/test/azure-Desp.properties 
-        echo "AZURE_CLIENT_ID=xyz" >> src/test/azure-Desp.properties
+        echo "AZURE_CLIENT_ID=${{ secrets.ABC }}" >> src/test/azure-Desp.properties
         echo "AZURE_CLIENT_SECRET=xyz" >> src/test/azure-Desp.properties
     - name: Move files to shared workspace
       run: |
@@ -31,12 +31,12 @@ jobs:
 
     - name: Create properties files
       run: |
-          mkdir -p folder1
-          echo "MY_SECRET_KEY_1=xyz" > folder1/file1.properties
-          echo "MY_SECRET_KEY_2=abc" > folder1/file2.properties
+          echo "MY_SECRET_KEY_1=${{ secrets.ABC }}" > src/test/file1.properties
+          echo "MY_SECRET_KEY_1=xyzdjshdjh" > src/test/file1.properties
+          echo "MY_SECRET_KEY_2=abc" > src/test/file2.properties
 
     - name: Save properties files to cache
-      uses: actions/cache@v3
+      uses: actions/cache@v2
       with:
           path: folder1
           key: ${{ runner.os }}-properties-${{ github.sha }}
@@ -71,7 +71,7 @@ jobs:
     #       cp $GITHUB_WORKSPACE/azure.properties src/test/azure.properties
     #       cp $GITHUB_WORKSPACE/azure-Desp.properties src/test/azure-Desp.properties
     - name: Restore properties files from cache
-      uses: actions/cache@v3
+      uses: actions/cache@v2
       with:
           path: folder1
           key: ${{ runner.os }}-properties-${{ github.sha }}
@@ -80,13 +80,15 @@ jobs:
 
     - name: Verify cached files
       run: |
-          ls -l folder1
-          cat folder1/file1.properties
-          cat folder1/file2.properties
-
-    - name: Move files to the desired directory
-      run: |
-          cp folder1/file1.properties src/test/
-          cp folder1/file2.properties src/test/
           ls -l src/test
+          cat src/test/file1.properties
+          cat src/test/file2.properties
+
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
